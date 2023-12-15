@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/words.sql:/docker-entrypoint-initdb.d/words.sql:ro
+    networks:
+      - 295Words
+  api:
+    image: api
+    container_name: api
+    depends_on:
+      - db
+    networks:
+      - 295Words
+
+  web:
+    image: web
+    container_name: web
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - 295Words
+
+networks:
+  295Words:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.101.0.0/16
+
