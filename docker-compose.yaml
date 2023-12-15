@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
   db:
@@ -15,7 +15,7 @@ services:
     networks:
       - 295Words
   api:
-    image: api
+    image: franncot/api:${GITHUB_SHA}
     container_name: api
     depends_on:
       - db
@@ -23,10 +23,10 @@ services:
       - 295Words
 
   web:
-    image: web
+    image: franncot/web:${GITHUB_SHA}
     container_name: web
     ports:
-      - "80:80"
+      - "8080:8080"
     depends_on:
       - api
     networks:

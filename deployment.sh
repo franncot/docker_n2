@@ -46,7 +46,7 @@ fi
 #Discord notification
 send_discord_notification() {
     DISCORD="https://discord.com/api/webhooks/1154865920741752872/au1jkQ7v9LgQJ131qFnFqP-WWehD40poZJXRGEYUDErXHLQJ_BBszUFtVj8g3pu9bm7h"
-    MESSAGE="Tu Ambiente esta listo!. Puedes validar en http://localhost:5000/api/topics"
+    MESSAGE="Tu Ambiente words 295 esta listo!. Puedes validar en http://localhost:8080"
 
     curl -X POST -H "Content-Type: application/json" \
          -d '{
@@ -66,9 +66,9 @@ check_application() {
         cd  $REPO >/dev/null 2>&1
         docker compose up -d >/dev/null 2>&1
         sleep 5
-        echo -e "${green}${bold}Todos los container inicializados puedes probar el ambiente con curl http://localhost:5000/api/topics  - Listo  ☑ ${reset}"
+        echo -e "${green}${bold}Todos los container inicializados puedes probar el ambiente con curl http://localhost:8080  - Listo  ☑ ${reset}"
         sleep 5
-        send_discord_notification
+        #send_discord_notification
     fi
 }
 

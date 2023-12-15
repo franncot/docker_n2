@@ -27,3 +27,28 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/api:"$GITHUB_SHA"
           docker push ${{ secrets.DOCKER_USERNAME }}/web:"$GITHUB_SHA"
 
+      - name: Checkout code
+        uses: actions/checkout@v3
+  
+      - name: Login to AWS 
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region us-east-1
+
+#Terraform steps
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+      - name: Terraform Apply
+        id:   apply
+        env:
+         TF_VAR_ec2_name:  "${{ github.event.inputs.ec2-name }}"
+        run: |
+          terraform init
+          terraform validate
+          terraform plan 
+          terraform apply -auto-approve
+
+
