@@ -48,7 +48,7 @@ resource "aws_security_group" "allow_words" {
 resource "aws_instance" "words295" {
     ami = "ami-0fc5d935ebf8bc3bc"
     instance_type = "t2.micro"
-    key_name = "words295"
+    key_name = "fullstack"
     user_data = file("deployment.sh")
     security_groups = [aws_security_group.allow_words.name]
     tags = {
