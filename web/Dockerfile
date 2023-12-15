@@ -7,7 +7,7 @@ WORKDIR /web
 # Copy the local code to the container workspace
 COPY . .
 
-#Solving modules error
+#Solving GO modules error
 RUN go mod init WebApp
 
 # Build the Go application
