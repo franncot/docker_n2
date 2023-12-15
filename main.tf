@@ -53,6 +53,5 @@ resource "aws_instance" "words295" {
     security_groups = [aws_security_group.allow_words.name]
     tags = {
     Name  = "words295"
-    Name = var.ec2_name
   }
 }
