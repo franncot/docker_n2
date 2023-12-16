@@ -17,7 +17,7 @@ fi
 #Update
 sudo apt update >/dev/null 2>&1
 
-packages=("docker-ce" "git" "curl" "nodejs" "npm")
+packages=("docker-ce" "git" "curl")
 #Installing docker newest version
 for package in "${packages[@]}"; do
     if dpkg -s "$package" >/dev/null 2>&1; then
