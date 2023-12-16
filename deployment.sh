@@ -6,10 +6,9 @@ green="\e[0;92m"
 bold="\e[1m"
 reset="\e[0m"
 REPO="docker_n2"
-VERSION=$(git describe --tags --abbrev=0)
 
 
-Priviledges not require on the AWS EC2 instance
+#Requiere privilegios
 if [ "$EUID" -ne 0 ]; then
     echo -e "${red}${bold}Este script requiere priviledgios de administrador para ser ejecutado. Por favor usa Sudo o Root. ☒ ${reset}"
     exit 1
@@ -18,7 +17,7 @@ fi
 #Update
 sudo apt update >/dev/null 2>&1
 
-packages=("docker-ce" "git" "curl")
+packages=("docker-ce" "git" "curl" "nodejs" "npm")
 #Installing docker newest version
 for package in "${packages[@]}"; do
     if dpkg -s "$package" >/dev/null 2>&1; then
@@ -47,6 +46,8 @@ else
      echo -e "${green}${bold}Repo Clonado -  Listo ☑ ${reset}"
 fi
 
+#Despues de descargar el repositorio ya puede usarse el describe.
+VERSION=$(git describe --tags --abbrev=0)
 
 #Discord notification
 send_discord_notification() {
@@ -74,12 +75,14 @@ check_application() {
         # Subir las imágenes a Docker Hub
         docker push franncot/api:$VERSION
         docker push franncot/web:$VERSION
+        # Export the VERSION variable
+        export VERSION
         sleep 5
         docker compose up -d >/dev/null 2>&1
         sleep 5
         echo -e "${green}${bold}Todos los container inicializados puedes probar el ambiente con curl http://localhost:8080  - Listo  ☑ ${reset}"
         sleep 5
-        #send_discord_notification
+        send_discord_notification
     fi
 }
 
