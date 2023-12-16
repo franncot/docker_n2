@@ -16,16 +16,21 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-        #hay un error en la autenticacion por alguna razon, si termina y sube las imagenes se agrego el true para ignorar...
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}  || true
-
-      - name: Build and push Docker images
+      - name: Get Git version
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/api:"$GITHUB_SHA" ./api
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/web:"$GITHUB_SHA" ./web
-          docker push ${{ secrets.DOCKER_USERNAME }}/api:"$GITHUB_SHA"
-          docker push ${{ secrets.DOCKER_USERNAME }}/web:"$GITHUB_SHA"
+          export GIT_VERSION=$(git describe --tags --abbrev=0)
+
+      - name: Login to Docker Hub
+        run: echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
+
+      - name: Build and push API Docker image
+        run: |
+            docker build -t ${DOCKERHUB_USERNAME}/api:$GIT_VERSION ./api
+            docker push ${DOCKERHUB_USERNAME}/api:$GIT_VERSION  
+      - name: Build and push Web Docker image
+        run: |
+            docker build -t ${DOCKERHUB_USERNAME}/web:$GIT_VERSION ./web
+            docker push ${DOCKERHUB_USERNAME}/web:$GIT_VERSION
 
       - name: Checkout code
         uses: actions/checkout@v3

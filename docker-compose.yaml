@@ -15,7 +15,7 @@ services:
     networks:
       - 295Words
   api:
-    image: franncot/api:${GITHUB_SHA}
+    image: franncot/api:023ba36b09f61ee25e5bf6e36f801ff82bb1aa4b
     container_name: api
     depends_on:
       - db
@@ -23,7 +23,7 @@ services:
       - 295Words
 
   web:
-    image: franncot/web:${GITHUB_SHA}
+    image: franncot/web:023ba36b09f61ee25e5bf6e36f801ff82bb1aa4b
     container_name: web
     ports:
       - "80:80"
