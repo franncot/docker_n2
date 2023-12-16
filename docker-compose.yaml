@@ -15,7 +15,7 @@ services:
     networks:
       - 295Words
   api:
-    image: franncot/api:023ba36b09f61ee25e5bf6e36f801ff82bb1aa4b
+    image: franncot/api:${VERSION}
     container_name: api
     depends_on:
       - db
@@ -23,9 +23,10 @@ services:
       - 295Words
 
   web:
-    image: franncot/web:023ba36b09f61ee25e5bf6e36f801ff82bb1aa4b
+    image: franncot/web:${VERSION}
     container_name: web
     ports:
+      - "8080:8080"
       - "80:80"
     depends_on:
       - api
